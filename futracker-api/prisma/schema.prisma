@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Assist {
+  game_id   Int?
+  id        Int     @default(autoincrement()) @id
+  player_id Int?
+  user_id   Int?
+  Game      Game?   @relation(fields: [game_id], references: [id])
+  Player    Player? @relation(fields: [player_id], references: [id])
+  User      User?   @relation(fields: [user_id], references: [id])
+
+  @@index([game_id], name: "fki_game_id")
+  @@index([player_id], name: "fki_player_id")
+  @@index([user_id], name: "fki_user_id")
+}
+
+model Game {
+  assists      Int[]
+  extra_time   Boolean?
+  goals        Int[]
+  id           Int       @default(autoincrement()) @id
+  opponent_tag String?
+  penalty      Boolean?
+  penalty_win  Boolean?
+  rage_quit    Boolean?
+  result       String?
+  time         DateTime?
+  user_id      Int?
+  User         User?     @relation(fields: [user_id], references: [id])
+  Assist       Assist[]
+}
+
+model Goal {
+  game_id   Int?
+  id        Int  @default(autoincrement()) @id
+  player_id Int?
+  user_id   Int?
+}
+
+model Player {
+  id        Int      @default(autoincrement()) @id
+  name      String?
+  rating    Int?
+  skills    Int?
+  user_id   Int?
+  version   String?
+  weak_foot Int?     @map("weak foot")
+  User      User?    @relation(fields: [user_id], references: [id])
+  Assist    Assist[]
+}
+
+model Team {
+  creation_date DateTime?
+  id            Int       @default(autoincrement()) @id
+  name          String?
+  player        Int[]
+  user_id       Int?
+  wl_used       Int[]
+  User          User?     @relation(fields: [user_id], references: [id])
+}
+
+model User {
+  gender        String?
+  id            Int             @default(autoincrement()) @id
+  language      String?
+  mail          String?
+  name          String?
+  password      String?
+  Assist        Assist[]
+  Game          Game[]
+  Player        Player[]
+  Team          Team[]
+  WeekendLeague WeekendLeague[]
+}
+
+model WeekendLeague {
+  end     DateTime?
+  game    Int[]
+  id      Int       @default(autoincrement()) @id
+  start   DateTime?
+  user_id Int?
+  User    User?     @relation(fields: [user_id], references: [id])
+}
