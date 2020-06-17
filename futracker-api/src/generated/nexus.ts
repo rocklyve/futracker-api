@@ -36,9 +36,7 @@ export interface NexusGenRootTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Game: { // root type
-    assists: number[]; // [Int!]!
     extra_time?: boolean | null; // Boolean
-    goals: number[]; // [Int!]!
     id: number; // Int!
     opponent_tag?: string | null; // String
     penalty?: boolean | null; // Boolean
@@ -47,6 +45,7 @@ export interface NexusGenRootTypes {
     result?: string | null; // String
     time?: any | null; // DateTime
     user_id?: number | null; // Int
+    wl_id?: number | null; // Int
   }
   Goal: { // root type
     game_id?: number | null; // Int
@@ -70,7 +69,6 @@ export interface NexusGenRootTypes {
     id: number; // Int!
     name?: string | null; // String
     user_id?: number | null; // Int
-    wl_used: number[]; // [Int!]!
   }
   User: { // root type
     email?: string | null; // String
@@ -81,10 +79,10 @@ export interface NexusGenRootTypes {
   }
   WeekendLeague: { // root type
     end?: any | null; // DateTime
-    game: number[]; // [Int!]!
     id: number; // Int!
     name: string; // String!
     start?: any | null; // DateTime
+    team_id?: number | null; // Int
     user_id?: number | null; // Int
   }
   String: string;
@@ -110,9 +108,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Game: { // field return type
-    assists: number[]; // [Int!]!
     extra_time: boolean | null; // Boolean
-    goals: number[]; // [Int!]!
     id: number; // Int!
     opponent_tag: string | null; // String
     penalty: boolean | null; // Boolean
@@ -121,6 +117,7 @@ export interface NexusGenFieldTypes {
     result: string | null; // String
     time: any | null; // DateTime
     user_id: number | null; // Int
+    wl_id: number | null; // Int
   }
   Goal: { // field return type
     game_id: number | null; // Int
@@ -129,7 +126,7 @@ export interface NexusGenFieldTypes {
     user_id: number | null; // Int
   }
   Mutation: { // field return type
-    createWL: NexusGenRootTypes['WeekendLeague']; // WeekendLeague!
+    addWL: NexusGenRootTypes['WeekendLeague']; // WeekendLeague!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
@@ -143,6 +140,7 @@ export interface NexusGenFieldTypes {
     weak_foot: number | null; // Int
   }
   Query: { // field return type
+    allWeekendLeague: NexusGenRootTypes['WeekendLeague'][]; // [WeekendLeague!]!
     me: NexusGenRootTypes['User'] | null; // User
   }
   Team: { // field return type
@@ -150,7 +148,6 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     name: string | null; // String
     user_id: number | null; // Int
-    wl_used: number[]; // [Int!]!
   }
   User: { // field return type
     email: string | null; // String
@@ -161,17 +158,17 @@ export interface NexusGenFieldTypes {
   }
   WeekendLeague: { // field return type
     end: any | null; // DateTime
-    game: number[]; // [Int!]!
     id: number; // Int!
     name: string; // String!
     start: any | null; // DateTime
+    team_id: number | null; // Int
     user_id: number | null; // Int
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createWL: { // args
+    addWL: { // args
       name: string; // String!
       time: string; // String!
     }

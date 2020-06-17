@@ -56,7 +56,7 @@ export const Mutation = mutationType({
       },
     })
 
-    t.field('createWL', {
+    t.field('addWL', {
       type: 'WeekendLeague',
       args: {
         name: stringArg({ nullable: false }),
@@ -66,35 +66,46 @@ export const Mutation = mutationType({
         const userId = getUserId(ctx)
         
         if (!userId) throw new Error('Could not authenticate user.')
+        console.log(args.name)
         return ctx.prisma.weekendLeague.create({
          data: {
-           start: args.time,
            name: args.name,
+           start: new Date(args.time),
            User: { connect: { id: Number(userId) } },
          },
         })
       }
     })
 
-    // t.field('createDraft', {
-    //   type: 'Post',
-    //   args: {
-    //     title: stringArg({ nullable: false }),
-    //     content: stringArg(),
-    //   },
-    //   resolve: (parent, { title, content }, ctx) => {
-    //     const userId = getUserId(ctx)
-    //     if (!userId) throw new Error('Could not authenticate user.')
-    //     return ctx.prisma.post.create({
-    //       data: {
-    //         title,
-    //         content,
-    //         published: false,
-    //         author: { connect: { id: Number(userId) } },
-    //       },
-    //     })
-    //   },
-    // })
+    // updateWL
+    // deleteWL
+    
+    // addGame
+    // updateGame
+    // deleteGame
+
+    // addGoal
+    // updateGoal
+    // deleteGoal
+
+    // addAssist
+    // updateAssist
+    // deleteAssist
+
+    // addPlayer
+    // updatePlayer
+    // deletePlayer
+
+    // addTeam
+    // updateTeam
+    // deleteTeam
+
+    // updateUser
+    // deleteUser
+    // logout
+
+
+
 
     // t.field('deletePost', {
     //   type: 'Post',

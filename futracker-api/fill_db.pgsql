@@ -24,4 +24,4 @@
 --INSERT INTO "Team" ("user_id", "name", "creation_date", "wl_used", "player") VALUES ('1', 'WL June 2', '06.16.2020-15:45:45', '{}', '{1,2,3,4,5,6,7,8,9,10,11}');
 
 -- DELETE FROM "User" WHERE id > 1;
-SELECT * FROM "User";
+SELECT * FROM "WeekendLeague";

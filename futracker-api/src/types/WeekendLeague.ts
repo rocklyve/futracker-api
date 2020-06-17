@@ -5,9 +5,9 @@ export const WeekendLeague = objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.game()
     t.model.start()
     t.model.end()
     t.model.user_id()
+    t.model.team_id()
   },
 })

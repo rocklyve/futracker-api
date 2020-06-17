@@ -22,20 +22,22 @@ model Assist {
 }
 
 model Game {
-  assists      Int[]
-  extra_time   Boolean?
-  goals        Int[]
-  id           Int       @default(autoincrement()) @id
-  opponent_tag String?
-  penalty      Boolean?
-  penalty_win  Boolean?
-  rage_quit    Boolean?
-  result       String?
-  time         DateTime?
-  user_id      Int?
-  User         User?     @relation(fields: [user_id], references: [id])
-  Assist       Assist[]
-  Goal         Goal[]
+  extra_time    Boolean?
+  id            Int            @default(autoincrement()) @id
+  opponent_tag  String?
+  penalty       Boolean?
+  penalty_win   Boolean?
+  rage_quit     Boolean?
+  result        String?
+  time          DateTime?
+  user_id       Int?
+  wl_id         Int?
+  User          User?          @relation(fields: [user_id], references: [id])
+  WeekendLeague WeekendLeague? @relation(fields: [wl_id], references: [id])
+  Assist        Assist[]
+  Goal          Goal[]
+
+  @@index([wl_id], name: "fki_wl_id")
 }
 
 model Goal {
@@ -63,12 +65,12 @@ model Player {
 
 model Team {
   creation_date DateTime
-  id            Int      @default(autoincrement()) @id
+  id            Int             @default(autoincrement()) @id
   name          String?
   player        Int[]
   user_id       Int?
-  wl_used       Int[]
-  User          User?    @relation(fields: [user_id], references: [id])
+  User          User?           @relation(fields: [user_id], references: [id])
+  WeekendLeague WeekendLeague[]
 }
 
 model User {
@@ -88,10 +90,14 @@ model User {
 
 model WeekendLeague {
   end     DateTime?
-  game    Int[]
   id      Int       @default(autoincrement()) @id
   name    String
   start   DateTime?
+  team_id Int?
   user_id Int?
+  Team    Team?     @relation(fields: [team_id], references: [id])
   User    User?     @relation(fields: [user_id], references: [id])
+  Game    Game[]
+
+  @@index([team_id], name: "fki_team_id")
 }

@@ -7,6 +7,5 @@ export const Team = objectType({
     t.model.creation_date()
     t.model.name()
     t.model.user_id()
-    t.model.wl_used()
   },
 })

@@ -17,9 +17,7 @@ type AuthPayload {
 scalar DateTime
 
 type Game {
-  assists: [Int!]!
   extra_time: Boolean
-  goals: [Int!]!
   id: Int!
   opponent_tag: String
   penalty: Boolean
@@ -28,6 +26,7 @@ type Game {
   result: String
   time: DateTime
   user_id: Int
+  wl_id: Int
 }
 
 type Goal {
@@ -38,7 +37,7 @@ type Goal {
 }
 
 type Mutation {
-  createWL(name: String!, time: String!): WeekendLeague!
+  addWL(name: String!, time: String!): WeekendLeague!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, name: String, password: String!): AuthPayload!
 }
@@ -54,6 +53,7 @@ type Player {
 }
 
 type Query {
+  allWeekendLeague: [WeekendLeague!]!
   me: User
 }
 
@@ -62,7 +62,6 @@ type Team {
   id: Int!
   name: String
   user_id: Int
-  wl_used: [Int!]!
 }
 
 type User {
@@ -75,9 +74,9 @@ type User {
 
 type WeekendLeague {
   end: DateTime
-  game: [Int!]!
   id: Int!
   name: String!
   start: DateTime
+  team_id: Int
   user_id: Int
 }

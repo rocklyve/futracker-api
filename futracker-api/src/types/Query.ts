@@ -16,6 +16,18 @@ export const Query = queryType({
       },
     })
 
+    t.list.field('allWeekendLeague', {
+      type: 'WeekendLeague',
+      resolve: (parent, args, ctx) => {
+        const userId = getUserId(ctx)
+        return ctx.prisma.weekendLeague.findMany({
+          where: {
+            user_id: Number(userId)
+          }
+        })
+      }
+    })
+
     // t.list.field('feed', {
     //   type: 'Post',
     //   resolve: (parent, args, ctx) => {

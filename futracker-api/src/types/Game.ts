@@ -4,9 +4,7 @@ export const Game = objectType({
   name: 'Game',
   definition(t) {
     t.model.id()
-    t.model.assists()
     t.model.extra_time()
-    t.model.goals()
     t.model.opponent_tag()
     t.model.penalty()
     t.model.penalty_win()
@@ -14,5 +12,6 @@ export const Game = objectType({
     t.model.result()
     t.model.time()
     t.model.user_id()
+    t.model.wl_id()
   },
 })
