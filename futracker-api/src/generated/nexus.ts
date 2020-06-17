@@ -25,80 +25,164 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Assist: { // root type
+    game_id?: number | null; // Int
+    id: number; // Int!
+    player_id?: number | null; // Int
+    user_id?: number | null; // Int
+  }
   AuthPayload: { // root type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
-  Mutation: {};
-  Query: {};
-  User: { // root type
+  Game: { // root type
+    assists: number[]; // [Int!]!
+    extra_time?: boolean | null; // Boolean
+    goals: number[]; // [Int!]!
     id: number; // Int!
-    mail?: string | null; // String
+    opponent_tag?: string | null; // String
+    penalty?: boolean | null; // Boolean
+    penalty_win?: boolean | null; // Boolean
+    rage_quit?: boolean | null; // Boolean
+    result?: string | null; // String
+    time?: any | null; // DateTime
+    user_id?: number | null; // Int
+  }
+  Goal: { // root type
+    game_id?: number | null; // Int
+    id: number; // Int!
+    player_id?: number | null; // Int
+    user_id?: number | null; // Int
+  }
+  Mutation: {};
+  Player: { // root type
+    id: number; // Int!
     name?: string | null; // String
+    rating?: number | null; // Int
+    skills?: number | null; // Int
+    user_id?: number | null; // Int
+    version?: string | null; // String
+    weak_foot?: number | null; // Int
+  }
+  Query: {};
+  Team: { // root type
+    creation_date: any; // DateTime!
+    id: number; // Int!
+    name?: string | null; // String
+    user_id?: number | null; // Int
+    wl_used: number[]; // [Int!]!
+  }
+  User: { // root type
+    email?: string | null; // String
+    gender?: string | null; // String
+    id: number; // Int!
+    language?: string | null; // String
+    name?: string | null; // String
+  }
+  WeekendLeague: { // root type
+    end?: any | null; // DateTime
+    game: number[]; // [Int!]!
+    id: number; // Int!
+    name: string; // String!
+    start?: any | null; // DateTime
+    user_id?: number | null; // Int
   }
   String: string;
   Int: number;
   Float: number;
   Boolean: boolean;
   ID: string;
+  DateTime: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Assist: { // field return type
+    game_id: number | null; // Int
+    id: number; // Int!
+    player_id: number | null; // Int
+    user_id: number | null; // Int
+  }
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Game: { // field return type
+    assists: number[]; // [Int!]!
+    extra_time: boolean | null; // Boolean
+    goals: number[]; // [Int!]!
+    id: number; // Int!
+    opponent_tag: string | null; // String
+    penalty: boolean | null; // Boolean
+    penalty_win: boolean | null; // Boolean
+    rage_quit: boolean | null; // Boolean
+    result: string | null; // String
+    time: any | null; // DateTime
+    user_id: number | null; // Int
+  }
+  Goal: { // field return type
+    game_id: number | null; // Int
+    id: number; // Int!
+    player_id: number | null; // Int
+    user_id: number | null; // Int
+  }
   Mutation: { // field return type
-    createDraft: NexusGenRootTypes['Post']; // Post!
-    deletePost: NexusGenRootTypes['Post'] | null; // Post
+    createWL: NexusGenRootTypes['WeekendLeague']; // WeekendLeague!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    publish: NexusGenRootTypes['Post'] | null; // Post
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
+  Player: { // field return type
+    id: number; // Int!
+    name: string | null; // String
+    rating: number | null; // Int
+    skills: number | null; // Int
+    user_id: number | null; // Int
+    version: string | null; // String
+    weak_foot: number | null; // Int
+  }
   Query: { // field return type
-    feed: NexusGenRootTypes['Post'][]; // [Post!]!
-    filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     me: NexusGenRootTypes['User'] | null; // User
-    post: NexusGenRootTypes['Post'] | null; // Post
+  }
+  Team: { // field return type
+    creation_date: any; // DateTime!
+    id: number; // Int!
+    name: string | null; // String
+    user_id: number | null; // Int
+    wl_used: number[]; // [Int!]!
   }
   User: { // field return type
+    email: string | null; // String
+    gender: string | null; // String
     id: number; // Int!
-    mail: string | null; // String
+    language: string | null; // String
     name: string | null; // String
+  }
+  WeekendLeague: { // field return type
+    end: any | null; // DateTime
+    game: number[]; // [Int!]!
+    id: number; // Int!
+    name: string; // String!
+    start: any | null; // DateTime
+    user_id: number | null; // Int
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createDraft: { // args
-      content?: string | null; // String
-      title: string; // String!
-    }
-    deletePost: { // args
-      id: number; // Int!
+    createWL: { // args
+      name: string; // String!
+      time: string; // String!
     }
     login: { // args
       email: string; // String!
       password: string; // String!
     }
-    publish: { // args
-      id?: number | null; // Int
-    }
     signup: { // args
       email: string; // String!
       name?: string | null; // String
       password: string; // String!
-    }
-  }
-  Query: {
-    filterPosts: { // args
-      searchString?: string | null; // String
-    }
-    post: { // args
-      id?: number | null; // Int
     }
   }
 }
@@ -108,7 +192,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "Assist" | "AuthPayload" | "Game" | "Goal" | "Mutation" | "Player" | "Query" | "Team" | "User" | "WeekendLeague";
 
 export type NexusGenInputNames = never;
 
@@ -116,7 +200,7 @@ export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = never;
 
-export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int" | "String";
 
 export type NexusGenUnionNames = never;
 

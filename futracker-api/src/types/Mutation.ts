@@ -2,6 +2,8 @@ import { intArg, mutationType, stringArg } from '@nexus/schema'
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { APP_SECRET, getUserId } from '../utils'
+import { print } from 'graphql'
+import { prismaVersion } from '@prisma/client'
 
 export const Mutation = mutationType({
   definition(t) {
@@ -54,49 +56,69 @@ export const Mutation = mutationType({
       },
     })
 
-    t.field('createDraft', {
-      type: 'Post',
+    t.field('createWL', {
+      type: 'WeekendLeague',
       args: {
-        title: stringArg({ nullable: false }),
-        content: stringArg(),
+        name: stringArg({ nullable: false }),
+        time: stringArg({ nullable: false }),
       },
-      resolve: (parent, { title, content }, ctx) => {
+      resolve: (parent, args, ctx) => {
         const userId = getUserId(ctx)
+        
         if (!userId) throw new Error('Could not authenticate user.')
-        return ctx.prisma.post.create({
-          data: {
-            title,
-            content,
-            published: false,
-            author: { connect: { id: Number(userId) } },
-          },
+        return ctx.prisma.weekendLeague.create({
+         data: {
+           start: args.time,
+           name: args.name,
+           User: { connect: { id: Number(userId) } },
+         },
         })
-      },
+      }
     })
 
-    t.field('deletePost', {
-      type: 'Post',
-      nullable: true,
-      args: { id: intArg({ nullable: false }) },
-      resolve: (parent, { id }, ctx) => {
-        return ctx.prisma.post.delete({
-          where: {
-            id,
-          },
-        })
-      },
-    })
+    // t.field('createDraft', {
+    //   type: 'Post',
+    //   args: {
+    //     title: stringArg({ nullable: false }),
+    //     content: stringArg(),
+    //   },
+    //   resolve: (parent, { title, content }, ctx) => {
+    //     const userId = getUserId(ctx)
+    //     if (!userId) throw new Error('Could not authenticate user.')
+    //     return ctx.prisma.post.create({
+    //       data: {
+    //         title,
+    //         content,
+    //         published: false,
+    //         author: { connect: { id: Number(userId) } },
+    //       },
+    //     })
+    //   },
+    // })
 
-    t.field('publish', {
-      type: 'Post',
-      nullable: true,
-      args: { id: intArg() },
-      resolve: (parent, { id }, ctx) => {
-        return ctx.prisma.post.update({
-          where: { id },
-          data: { published: true },
-        })
-      },
-    })
+    // t.field('deletePost', {
+    //   type: 'Post',
+    //   nullable: true,
+    //   args: { id: intArg({ nullable: false }) },
+    //   resolve: (parent, { id }, ctx) => {
+    //     return ctx.prisma.post.delete({
+    //       where: {
+    //         id,
+    //       },
+    //     })
+    //   },
+    // })
+
+    // t.field('publish', {
+    //   type: 'Post',
+    //   nullable: true,
+    //   args: { id: intArg() },
+    //   resolve: (parent, { id }, ctx) => {
+    //     return ctx.prisma.post.update({
+    //       where: { id },
+    //       data: { published: true },
+    //     })
+    //   },
+    // })
   },
 })

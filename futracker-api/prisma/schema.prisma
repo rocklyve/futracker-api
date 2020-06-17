@@ -35,13 +35,17 @@ model Game {
   user_id      Int?
   User         User?     @relation(fields: [user_id], references: [id])
   Assist       Assist[]
+  Goal         Goal[]
 }
 
 model Goal {
   game_id   Int?
-  id        Int  @default(autoincrement()) @id
+  id        Int     @default(autoincrement()) @id
   player_id Int?
   user_id   Int?
+  Game      Game?   @relation(fields: [game_id], references: [id])
+  Player    Player? @relation(fields: [player_id], references: [id])
+  User      User?   @relation(fields: [user_id], references: [id])
 }
 
 model Player {
@@ -54,27 +58,29 @@ model Player {
   weak_foot Int?     @map("weak foot")
   User      User?    @relation(fields: [user_id], references: [id])
   Assist    Assist[]
+  Goal      Goal[]
 }
 
 model Team {
-  creation_date DateTime?
-  id            Int       @default(autoincrement()) @id
+  creation_date DateTime
+  id            Int      @default(autoincrement()) @id
   name          String?
   player        Int[]
   user_id       Int?
   wl_used       Int[]
-  User          User?     @relation(fields: [user_id], references: [id])
+  User          User?    @relation(fields: [user_id], references: [id])
 }
 
 model User {
+  email         String?         @unique
   gender        String?
   id            Int             @default(autoincrement()) @id
   language      String?
-  mail          String?
   name          String?
   password      String?
   Assist        Assist[]
   Game          Game[]
+  Goal          Goal[]
   Player        Player[]
   Team          Team[]
   WeekendLeague WeekendLeague[]
@@ -84,6 +90,7 @@ model WeekendLeague {
   end     DateTime?
   game    Int[]
   id      Int       @default(autoincrement()) @id
+  name    String
   start   DateTime?
   user_id Int?
   User    User?     @relation(fields: [user_id], references: [id])

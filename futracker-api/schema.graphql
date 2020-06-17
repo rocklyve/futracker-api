@@ -2,30 +2,82 @@
 ### Do not make changes to this file directly
 
 
+type Assist {
+  game_id: Int
+  id: Int!
+  player_id: Int
+  user_id: Int
+}
+
 type AuthPayload {
   token: String!
   user: User!
 }
 
+scalar DateTime
+
+type Game {
+  assists: [Int!]!
+  extra_time: Boolean
+  goals: [Int!]!
+  id: Int!
+  opponent_tag: String
+  penalty: Boolean
+  penalty_win: Boolean
+  rage_quit: Boolean
+  result: String
+  time: DateTime
+  user_id: Int
+}
+
+type Goal {
+  game_id: Int
+  id: Int!
+  player_id: Int
+  user_id: Int
+}
+
 type Mutation {
-  createDraft(content: String, title: String!): Post!
-  deletePost(id: Int!): Post
+  createWL(name: String!, time: String!): WeekendLeague!
   login(email: String!, password: String!): AuthPayload!
-  publish(id: Int): Post
   signup(email: String!, name: String, password: String!): AuthPayload!
 }
 
-type Post
+type Player {
+  id: Int!
+  name: String
+  rating: Int
+  skills: Int
+  user_id: Int
+  version: String
+  weak_foot: Int
+}
 
 type Query {
-  feed: [Post!]!
-  filterPosts(searchString: String): [Post!]!
   me: User
-  post(id: Int): Post
+}
+
+type Team {
+  creation_date: DateTime!
+  id: Int!
+  name: String
+  user_id: Int
+  wl_used: [Int!]!
 }
 
 type User {
+  email: String
+  gender: String
   id: Int!
-  mail: String
+  language: String
   name: String
+}
+
+type WeekendLeague {
+  end: DateTime
+  game: [Int!]!
+  id: Int!
+  name: String!
+  start: DateTime
+  user_id: Int
 }
