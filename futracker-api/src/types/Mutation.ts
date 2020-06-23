@@ -4,6 +4,8 @@ import { sign } from 'jsonwebtoken'
 import { APP_SECRET, getUserId } from '../utils'
 import { print } from 'graphql'
 import { prismaVersion } from '@prisma/client'
+import { User } from './User'
+import { Z_ASCII } from 'zlib'
 
 export const Mutation = mutationType({
   definition(t) {
@@ -66,7 +68,6 @@ export const Mutation = mutationType({
         const userId = getUserId(ctx)
         
         if (!userId) throw new Error('Could not authenticate user.')
-        console.log(args.name)
         return ctx.prisma.weekendLeague.create({
          data: {
            name: args.name,
@@ -76,6 +77,8 @@ export const Mutation = mutationType({
         })
       }
     })
+
+    
 
     // updateWL
     // deleteWL
@@ -93,19 +96,81 @@ export const Mutation = mutationType({
     // deleteAssist
 
     // addPlayer
+    t.field('addPlayer', {
+      type: 'Player',
+      args: {
+        name: stringArg({ nullable: false }),
+        rating: intArg({ nullable: false }),
+        skills: intArg({ nullable: true }),
+        weak_foot: intArg({ nullable: true }),
+        version: stringArg({ nullable: true }),
+      },
+      resolve: (parent, args, ctx) => {
+        const userId = getUserId(ctx)
+        if (!userId) throw new Error('Could not authentication user.')
+
+        return ctx.prisma.player.create({
+          data: {
+            name: args.name,
+            rating: args.rating,
+            skills: args.skills,
+            weak_foot: args.weak_foot,
+            version: args.version,
+            User: { connect: { id: Number(userId) } },
+          }
+        })
+      }
+    })
+
     // updatePlayer
+
     // deletePlayer
 
     // addTeam
+    t.field('addTeam', {
+      type: 'Team',
+      args: {
+        name: stringArg({ nullable: false }),
+        creation_date: stringArg({ nullable: false }),
+        // TODO: add player array with players in
+      },
+      resolve: (parent, args, ctx) => {
+        const userId = getUserId(ctx)
+        if (!userId) throw new Error('Could not authenticate user.')
+        return ctx.prisma.team.create({
+          data: {
+            name: args.name,
+            creation_date: args.creation_date
+          }
+        })
+      }
+    })
+
     // updateTeam
+    // TODO: updateTeamName, updatePlayersOfTeam
+
     // deleteTeam
+    t.field('deleteTeam', {
+      type: 'Team',
+      nullable: true,
+      args: {
+        id: intArg({ nullable: false })
+      },
+      resolve: (parent, { id }, ctx) => {
+        const userId = getUserId(ctx)
+        if (!userId) throw new Error('Could not authenticate user.')
+
+        return ctx.prisma.team.delete({
+          where: {
+            id,
+          }
+        })
+      }
+    })
 
     // updateUser
     // deleteUser
     // logout
-
-
-
 
     // t.field('deletePost', {
     //   type: 'Post',

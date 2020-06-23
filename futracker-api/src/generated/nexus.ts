@@ -126,7 +126,10 @@ export interface NexusGenFieldTypes {
     user_id: number | null; // Int
   }
   Mutation: { // field return type
+    addPlayer: NexusGenRootTypes['Player']; // Player!
+    addTeam: NexusGenRootTypes['Team']; // Team!
     addWL: NexusGenRootTypes['WeekendLeague']; // WeekendLeague!
+    deleteTeam: NexusGenRootTypes['Team'] | null; // Team
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
@@ -168,9 +171,23 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addPlayer: { // args
+      name: string; // String!
+      rating: number; // Int!
+      skills?: number | null; // Int
+      version?: string | null; // String
+      weak_foot?: number | null; // Int
+    }
+    addTeam: { // args
+      creation_date: string; // String!
+      name: string; // String!
+    }
     addWL: { // args
       name: string; // String!
       time: string; // String!
+    }
+    deleteTeam: { // args
+      id: number; // Int!
     }
     login: { // args
       email: string; // String!

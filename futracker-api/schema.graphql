@@ -37,7 +37,10 @@ type Goal {
 }
 
 type Mutation {
+  addPlayer(name: String!, rating: Int!, skills: Int, version: String, weak_foot: Int): Player!
+  addTeam(creation_date: String!, name: String!): Team!
   addWL(name: String!, time: String!): WeekendLeague!
+  deleteTeam(id: Int!): Team
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, name: String, password: String!): AuthPayload!
 }
